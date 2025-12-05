@@ -11,7 +11,7 @@
     <ServerGarbageCollection>true</ServerGarbageCollection>
     <ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net472' ">
     <PreferNativeArm64>true</PreferNativeArm64>
   </PropertyGroup>
   <ItemDefinitionGroup>
