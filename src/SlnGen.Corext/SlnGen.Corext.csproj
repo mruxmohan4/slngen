@@ -11,11 +11,11 @@
     <DevelopmentDependency>true</DevelopmentDependency>
     <IncludeSymbols>false</IncludeSymbols>
     <!-- SlnGen.Corext is a NoTargets net472 packaging project that only
-         repacks the SlnGen output. SourceLink 10.x triggers
-         ResolveAssemblyReferences via the SourceControl info targets,
-         which then fails MSB3245 trying to resolve the implicit
-         mscorlib / System.Numerics references. Since this project never
-         compiles code, suppress the implicit framework references. -->
+         repacks the SlnGen output and does not compile code. The NoTargets
+         SDK suppresses GetReferenceAssemblyPaths, so RAR has no targeting
+         pack directories to resolve against. Suppress the implicit
+         framework references (System, System.Core, etc.) added by the
+         .NET SDK for net472. -->
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
     <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);GetMyPackageFiles</TargetsForTfmSpecificContentInPackage>
   </PropertyGroup>
@@ -24,6 +24,21 @@
                       Private="false"
                       OutputItemType="SlnGenOutputGroup" />
   </ItemGroup>
+  <!--
+    Transitive NuGet packages (System.Numerics.Vectors, System.Runtime.CompilerServices.Unsafe,
+    etc.) flow through the ProjectReference above and declare net472 framework references
+    (System.Numerics, mscorlib) via their nuspec frameworkAssembly entries. NuGet's
+    ResolveLockFileReferences target adds those to @(Reference) with
+    NuGetIsFrameworkReference=true, and then ResolveAssemblyReferences fails with MSB3245
+    because the NoTargets SDK suppresses GetReferenceAssemblyPaths and there are no
+    TargetFrameworkDirectories to resolve them against. Strip them before RAR runs since
+    this packaging-only project never compiles managed code.
+  -->
+  <Target Name="_RemoveTransitiveFrameworkReferences" BeforeTargets="ResolveAssemblyReferences">
+    <ItemGroup>
+      <Reference Remove="@(Reference)" Condition="'%(Reference.NuGetIsFrameworkReference)' == 'true'" />
+    </ItemGroup>
+  </Target>
   <ItemGroup>
     <None Include="SlnGen.cmd"
           Pack="true"
