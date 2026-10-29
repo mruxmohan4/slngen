@@ -8,7 +8,10 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <MicrosoftBuildPackageVersion>18.9.6</MicrosoftBuildPackageVersion>
     <MicrosoftBuildPackageVersion Condition="'$(TargetFramework)' == 'net8.0'">17.11.48</MicrosoftBuildPackageVersion>
-    <SystemConfigurationConfigurationManagerPackageVersion>9.0.0</SystemConfigurationConfigurationManagerPackageVersion>
+    <MicrosoftBuildPackageVersion Condition="'$(TargetFramework)' == 'net9.0'">17.14.28</MicrosoftBuildPackageVersion>
+    <!-- Match MSBuild.ProjectCreation's framework-specific minimum versions. -->
+    <MicrosoftBuildPackageVersion Condition="'$(TargetFramework)' == 'net472' Or '$(TargetFramework)' == 'net11.0'">18.10.1</MicrosoftBuildPackageVersion>
+    <SystemConfigurationConfigurationManagerPackageVersion>10.0.10</SystemConfigurationConfigurationManagerPackageVersion>
     <MicrosoftExtensionsFileSystemGlobbingPackageVersion>8.0.0</MicrosoftExtensionsFileSystemGlobbingPackageVersion>
     <MicrosoftExtensionsFileSystemGlobbingPackageVersion Condition="'$(TargetFramework)' == 'net472'">6.0.0</MicrosoftExtensionsFileSystemGlobbingPackageVersion>
   </PropertyGroup>
@@ -37,10 +40,10 @@
     <!-- Pinning vulnerable packages -->
     <PackageVersion Include="MessagePack" Version="2.5.187" />
     <PackageVersion Include="Microsoft.IO.Redist" Version="6.1.0" />
-    <PackageVersion Include="System.Formats.Asn1" Version="9.0.16" />
+    <PackageVersion Include="System.Formats.Asn1" Version="10.0.10" />
     <PackageVersion Include="System.Net.Http" Version="4.3.4" />
-    <PackageVersion Include="System.Security.Cryptography.Xml" Version="9.0.16" />
-    <PackageVersion Include="System.Text.Json" Version="9.0.0" />
+    <PackageVersion Include="System.Security.Cryptography.Xml" Version="10.0.10" />
+    <PackageVersion Include="System.Text.Json" Version="10.0.10" />
     <PackageVersion Include="System.Text.RegularExpressions" Version="4.3.1" />
   </ItemGroup>
   <ItemGroup>
